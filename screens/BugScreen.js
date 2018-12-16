@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux'
 import { WebBrowser } from 'expo';
+import { Buffer } from 'buffer'
 
 import Colors from '../constants/Colors';
 import Constant from '../constants/Constant';
@@ -86,14 +87,17 @@ class BugScreen extends React.Component {
 
   _bugItem({item}) {
     return (
-      <View style={styles.tabBarInfoContainer}>
+      <View style={styles.bugsList}>
+        <Image
+          source={item.file ? {uri: `data:image/png;base64, ${Buffer.from(item.file).toString('base64')}`} : ''}
+          style={styles.welcomeImage}
+        />
         <Text style={styles.tabBarInfoText}>{item.title}</Text>
       </View>
     );
   }
 
   _addBug = () => {
-    // this.props.listBugs();
   }
 
   _openBugifyWeb = () => {
@@ -128,7 +132,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 50,
   },
-  tabBarInfoContainer: {
+  bugsList: {
     ...Platform.select({
       ios: {
         shadowColor: 'black',
@@ -141,6 +145,8 @@ const styles = StyleSheet.create({
       },
     }),
     alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     backgroundColor: '#fbfbfb',
     paddingVertical: 20,
   },
